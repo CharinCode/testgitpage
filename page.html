@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js App</title>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="article in news.articles" :key="article.title">
+                {{ article.title }}
+            </li>
+        </ul>
+    </div>
+
+    <!-- Include Vue and Axios -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+       
+        // Create a Vue app
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    msg: "ComsumeData",
+                    news: [],
+                }
+            },
+            mounted() {
+           
+                axios.get("https://newsapi.org/v2/top-headlines?country=th&category=business&apiKey=80ec9122804a454db4bf8af2641ce368")
+                    .then((response) => {
+                        this.news = response.data;
+                    })
+                    .catch((error) => {
+                        console.error('Error fetching data:', error);
+                    });
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>
